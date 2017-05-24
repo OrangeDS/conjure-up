@@ -37,6 +37,7 @@ class BaseLXDSetupController:
         lxd_init_cmds = [
             "conjure-up.lxc version",
             'conjure-up.lxc config set core.https_address [::]:12001',
+            'conjure-up.lxc storage create default dir',
             'conjure-up.lxc profile device add default '
             'root disk path=/ pool=default',
         ]
@@ -44,7 +45,7 @@ class BaseLXDSetupController:
             app.log.debug("LXD Init: {}".format(cmd))
             out = utils.run_script(cmd)
             if out.returncode != 0:
-                if 'device already exists' not in out.stderr.decode():
+                if 'already exists' not in out.stderr.decode():
                     raise Exception(
                         "Problem running: {}:{}".format(
                             cmd,
