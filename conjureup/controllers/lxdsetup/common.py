@@ -37,8 +37,8 @@ class BaseLXDSetupController:
         lxd_init_cmds = [
             "conjure-up.lxc version",
             'conjure-up.lxc config set core.https_address [::]:12001',
-            'conjure-up.lxc profile device add juju-{model} '
-            'root disk path=/ pool=default'.format(model=app.current_model),
+            'conjure-up.lxc profile device add default '
+            'root disk path=/ pool=default',
         ]
         for cmd in lxd_init_cmds:
             app.log.debug("LXD Init: {}".format(cmd))
@@ -71,7 +71,7 @@ class BaseLXDSetupController:
 
         out = utils.run_script(
             'conjure-up.lxc network attach-profile conjureup1 '
-            'juju-{model} eth0 eth0'.format(model=app.current_model))
+            'default eth0 eth0')
 
         if out.returncode != 0:
             # Skip if device already exists
@@ -96,7 +96,7 @@ class BaseLXDSetupController:
 
         out = utils.run_script(
             'conjure-up.lxc network attach-profile conjureup0 '
-            'juju-{model} eth1 eth1'.format(model=app.current_model))
+            'default eth1 eth1')
 
         if out.returncode != 0:
             # Skip if device already exists
